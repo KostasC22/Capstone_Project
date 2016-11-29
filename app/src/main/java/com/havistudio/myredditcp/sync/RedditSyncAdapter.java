@@ -13,11 +13,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.havistudio.myreddit.R;
-import com.havistudio.myreddit.api.Child;
-import com.havistudio.myreddit.api.Example;
-import com.havistudio.myreddit.api.MyApiRetrofit;
-import com.havistudio.myreddit.data.SubRedditContract;
+import com.havistudio.myredditcp.R;
+import com.havistudio.myredditcp.api.Child;
+import com.havistudio.myredditcp.api.Example;
+import com.havistudio.myredditcp.api.MyApiRetrofit;
+import com.havistudio.myredditcp.data.SubRedditContract;
 
 import java.io.IOException;
 import java.util.HashMap;

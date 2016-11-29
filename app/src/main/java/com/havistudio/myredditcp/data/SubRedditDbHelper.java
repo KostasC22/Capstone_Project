@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.havistudio.myreddit.data.SubRedditContract.SubRedditEntry;
+import com.havistudio.myredditcp.data.SubRedditContract.SubRedditEntry;
 
 /**
  * Created by kostas on 01/10/2016.

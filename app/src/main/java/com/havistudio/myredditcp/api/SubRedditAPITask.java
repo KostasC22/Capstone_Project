@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.havistudio.myreddit.SubRedditAdapter;
+import com.havistudio.myredditcp.SubRedditAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;

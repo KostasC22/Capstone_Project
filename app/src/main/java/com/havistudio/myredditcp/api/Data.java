@@ -163,7 +163,7 @@ public class Data {
     private Preview preview;
     @SerializedName("replies")
     @Expose
-    private Child replies;
+    private Replies replies;
     /**
      *
      * @return
@@ -1046,6 +1046,29 @@ public class Data {
         this.distinguished = distinguished;
     }
 
+    public Boolean getSelf() {
+        return isSelf;
+    }
+
+    public void setSelf(Boolean self) {
+        isSelf = self;
+    }
+
+    public Preview getPreview() {
+        return preview;
+    }
+
+    public void setPreview(Preview preview) {
+        this.preview = preview;
+    }
+
+    public Replies getReplies() {
+        return replies;
+    }
+
+    public void setReplies(Replies replies) {
+        this.replies = replies;
+    }
 
     @Override
     public String toString() {
