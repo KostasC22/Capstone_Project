@@ -164,6 +164,53 @@ public class Data {
     @SerializedName("replies")
     @Expose
     private Replies replies;
+    @SerializedName("body")
+    @Expose
+    private String body;
+    @SerializedName("body_html")
+    @Expose
+    private String bodyHtml;
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getBodyHtml() {
+        return bodyHtml;
+    }
+
+    public void setBodyHtml(String bodyHtml) {
+        this.bodyHtml = bodyHtml;
+    }
+
+    public Boolean getSelf() {
+        return isSelf;
+    }
+
+    public void setSelf(Boolean self) {
+        isSelf = self;
+    }
+
+    public Preview getPreview() {
+        return preview;
+    }
+
+    public void setPreview(Preview preview) {
+        this.preview = preview;
+    }
+
+    public Replies getReplies() {
+        return replies;
+    }
+
+    public void setReplies(Replies replies) {
+        this.replies = replies;
+    }
+
     /**
      *
      * @return
@@ -1046,30 +1093,6 @@ public class Data {
         this.distinguished = distinguished;
     }
 
-    public Boolean getSelf() {
-        return isSelf;
-    }
-
-    public void setSelf(Boolean self) {
-        isSelf = self;
-    }
-
-    public Preview getPreview() {
-        return preview;
-    }
-
-    public void setPreview(Preview preview) {
-        this.preview = preview;
-    }
-
-    public Replies getReplies() {
-        return replies;
-    }
-
-    public void setReplies(Replies replies) {
-        this.replies = replies;
-    }
-
     @Override
     public String toString() {
         return "Data{" +
@@ -1122,6 +1145,10 @@ public class Data {
                 ", visited=" + visited +
                 ", numReports=" + numReports +
                 ", distinguished=" + distinguished +
+                ", preview=" + preview +
+                ", replies=" + replies +
+                ", body='" + body + '\'' +
+                ", bodyHtml='" + bodyHtml + '\'' +
                 '}';
     }
 }
