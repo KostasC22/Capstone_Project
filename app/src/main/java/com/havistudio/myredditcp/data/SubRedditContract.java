@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 
 public class SubRedditContract {
 
-    public static final String CONTENT_AUTHORITY = "com.havistudio.myredditcp";
+    public static final String CONTENT_AUTHORITY = "com.havistudio.myreddit";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
@@ -77,6 +77,7 @@ public class SubRedditContract {
         public static final String COLUMN_VISITED = "visited";
         public static final String COLUMN_NUM_REPORTS = "numreports";
         public static final String COLUMN_DISTINGUISHED = "distinguished";
+        public static final String COLUMN_SUBSCRIBE = "subscribe";
 
         public static Uri buildSubRedditUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

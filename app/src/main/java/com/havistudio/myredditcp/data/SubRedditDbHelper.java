@@ -12,7 +12,7 @@ import com.havistudio.myredditcp.data.SubRedditContract.SubRedditEntry;
 
 public class SubRedditDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "subreddit.db";
 
@@ -72,7 +72,8 @@ public class SubRedditDbHelper extends SQLiteOpenHelper {
                 SubRedditEntry.COLUMN_NUM_COMMENTS + " TEXT NOT NULL, " +
                 SubRedditEntry.COLUMN_VISITED + " TEXT NOT NULL, " +
                 SubRedditEntry.COLUMN_NUM_REPORTS + " TEXT NOT NULL, " +
-                SubRedditEntry.COLUMN_DISTINGUISHED + " TEXT NOT NULL " +
+                SubRedditEntry.COLUMN_DISTINGUISHED + " TEXT NOT NULL, " +
+                SubRedditEntry.COLUMN_SUBSCRIBE + " TEXT NOT NULL " +
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_SUBREDDIT_TABLE);

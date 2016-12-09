@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.havistudio.myreddit.data.SubRedditContract;
+import com.havistudio.myredditcp.data.SubRedditContract;
 import com.squareup.picasso.Picasso;
 
 import java.io.UnsupportedEncodingException;

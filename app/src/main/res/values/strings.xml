@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MyRedditCP</string>
+
+    <string name="sync_account_type">myreddit.havistudio.com</string>
+    <string name="content_authority">com.havistudio.myreddit</string>
 </resources>

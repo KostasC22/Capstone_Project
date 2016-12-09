@@ -90,6 +90,10 @@ public class SubRedditProvider extends ContentProvider {
         Cursor retCursor;
         Log.i("SubRedditProvider", "query: " + uri);
         Log.i("SubRedditProvider", "sUriMatcher.match(uri): " + sUriMatcher.match(uri));
+
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(SubRedditContract.SubRedditEntry.TABLE_NAME);
+
         switch (sUriMatcher.match(uri)) {
             // "subreddit"
             case SUBREDDIT: {
