@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">MyRedditCP</string>
 
-    <string name="sync_account_type">myreddit.havistudio.com</string>
-    <string name="content_authority">com.havistudio.myreddit</string>
+    <string name="sync_account_type">myredditcp.havistudio.com</string>
+    <string name="content_authority">com.havistudio.myredditcp</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="empty_subreddit_list">No Subreddit available</string>
+    <string name="title_activity_sub_reddit_detail">SubRedditDetailActivity</string>
+    <string name="button_subscribe">subscribe</string>
+    <string name="detail_fragment_comments_title">Comments</string>
 </resources>

@@ -67,7 +67,7 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
             int upsIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_UPS);
             int downsIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
             Log.i("Main3ActivityFragment", "onClick1: "+currentId);
-            Intent intent = new Intent(context, Main3Activity.class);
+            Intent intent = new Intent(context, SubRedditDetailActivity.class);
             intent.putExtra("subredditId", currentId);
             intent.putExtra("subreddittitle",  mCursor.getString(titleIndex));
             intent.putExtra("subredditthumb",  mCursor.getString(thumbIndex));

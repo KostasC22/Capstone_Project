@@ -21,7 +21,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.havistudio.myredditcp.CommentsTask;
 import com.havistudio.myredditcp.R;
+import com.havistudio.myredditcp.SubRedditDetailActivity;
 import com.havistudio.myredditcp.api.Child;
 import com.havistudio.myredditcp.api.Example;
 import com.havistudio.myredditcp.api.MyApiRetrofit;
@@ -44,12 +46,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = RedditSyncAdapter.class.getSimpleName();
     public static final String ACTION_DATA_UPDATED =
-            "com.havistudio.myreddit.ACTION_DATA_UPDATED";
+            "com.havistudio.myredditcp.ACTION_DATA_UPDATED";
 
     public static final int SYNC_INTERVAL = 15;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-    private static final int SUBREDDIT_NOTIFICATION_ID = 3004;
+    private static final int SUBREDDIT_NOTIFICATION_ID = 3005;
     private Context mContext;
 
     public RedditSyncAdapter(Context context, boolean autoInitialize) {
@@ -197,9 +199,9 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
                 int downsIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
                 String columnID = mCursor2.getString(columnIndex);
                 int cpComments = Integer.parseInt(mCursor2.getString(columnNoC));
-                TestAPITask5 tat5 = new TestAPITask5(columnID, false);
+                CommentsTask ct = new CommentsTask(columnID, false);
                 try {
-                    List<Child> comments = tat5.execute().get();
+                    List<Child> comments = ct.execute().get();
                     for (Child tempChild : comments) {
                         int inCom = tempChild.getData().getNumComments();
                         if (cpComments != inCom) {
@@ -221,7 +223,7 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
 
                             // Make something interesting happen when the user clicks on the notification.
                             // In this case, opening the app is sufficient.
-                            Intent resultIntent = new Intent(mContext, Main3Activity.class);
+                            Intent resultIntent = new Intent(mContext, SubRedditDetailActivity.class);
                             resultIntent.putExtra("subredditId", columnID);
                             resultIntent.putExtra("subreddittitle", mCursor2.getString(titleIndex));
                             resultIntent.putExtra("subredditthumb", mCursor2.getString(thumbIndex));
@@ -278,23 +280,27 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
         //Log.i("kostaslog", "getSyncAccount: 4");
         // If the password doesn't exist, the account doesn't exist
-        if (null == accountManager.getPassword(newAccount)) {
+        try {
+            if (null == accountManager.getPassword(newAccount)) {
 
-        /*
-         * Add the account and account type, no password or user data
-         * If successful, return the Account object, otherwise report an error.
-         */
-            if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
-                return null;
-            }
             /*
-             * If you don't set android:syncable="true" in
-             * in your <provider> element in the manifest,
-             * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
-             * here.
+             * Add the account and account type, no password or user data
+             * If successful, return the Account object, otherwise report an error.
              */
+                if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
+                    return null;
+                }
+                /*
+                 * If you don't set android:syncable="true" in
+                 * in your <provider> element in the manifest,
+                 * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
+                 * here.
+                 */
 
-            onAccountCreated(newAccount, context);
+                onAccountCreated(newAccount, context);
+            }
+        } catch (SecurityException e){
+
         }
         //Log.i("kostaslog", "getSyncAccount: 5");
         return newAccount;

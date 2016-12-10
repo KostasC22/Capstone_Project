@@ -11,7 +11,6 @@ public class RedditSyncService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("RedditSyncService", "onCreate - RedditSyncService");
         synchronized (sSyncAdapterLock) {
             if (sRedditSyncAdapter == null) {
                 sRedditSyncAdapter = new RedditSyncAdapter(getApplicationContext(), true);

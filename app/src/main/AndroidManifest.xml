@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.havistudio.myredditcp">
 
@@ -13,34 +14,56 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SubRedditDetailActivity"
+            android:label="@string/title_activity_sub_reddit_detail"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.havistudio.myredditcp.MainActivity" />
+        </activity>
+
+        <service
+            android:name=".sync.RedditSyncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+        <service android:name=".sync.RedditAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <provider
+            android:name=".data.SubRedditProvider"
+            android:authorities="@string/content_authority"
+            android:exported="false"
+            android:syncable="true" />
 
     </application>
 
-    <service
-        android:name=".sync.RedditSyncService"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.content.SyncAdapter" />
-        </intent-filter>
 
-        <meta-data
-            android:name="android.content.SyncAdapter"
-            android:resource="@xml/syncadapter" />
-    </service>
-    <service android:name=".sync.RedditAuthenticatorService">
-        <intent-filter>
-            <action android:name="android.accounts.AccountAuthenticator" />
-        </intent-filter>
 
-        <meta-data
-            android:name="android.accounts.AccountAuthenticator"
-            android:resource="@xml/authenticator" />
-    </service>
-
-    <provider
-        android:name=".data.SubRedditProvider"
-        android:authorities="@string/content_authority"
-        android:exported="false"
-        android:syncable="true" />
 
 </manifest>
