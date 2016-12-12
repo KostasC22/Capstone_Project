@@ -37,6 +37,12 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     // butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
+    // firebase with ads
+    compile 'com.google.firebase:firebase-ads:9.0.0'
+    // analytics
+    compile 'com.google.android.gms:play-services-analytics:9.0.0'
 
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

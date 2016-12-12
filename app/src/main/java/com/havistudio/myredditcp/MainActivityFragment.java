@@ -13,6 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.havistudio.myredditcp.data.SubRedditContract;
 
 /**
@@ -20,6 +25,7 @@ import com.havistudio.myredditcp.data.SubRedditContract;
  */
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private Tracker mTracker;
     private RecyclerView mRecyclerView;
     private SubRedditAdapter mSubRedditAdapter;
 
@@ -41,6 +47,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public MainActivityFragment() {
     }
 
+    public void onCreate (Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        // Obtain the shared Tracker instance.
+        MyRedditCPApp application = (MyRedditCPApp) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +67,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         // create the empty view
         View emptyView = rootView.findViewById(R.id.recyclerview_subreddits_empty);
 
-        mSubRedditAdapter = new SubRedditAdapter(getActivity(), new SubRedditAdapter.SubRedditAdapterOnClickHandler() {
+        mSubRedditAdapter = new SubRedditAdapter(getActivity(), mTracker,new SubRedditAdapter.SubRedditAdapterOnClickHandler() {
             @Override
             public void onClick(Long date, SubRedditAdapter.SubRedditAdapterViewHolder vh) {
 
@@ -63,6 +77,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         mRecyclerView.setAdapter(mSubRedditAdapter);
 
+        MobileAds.initialize(getActivity().getApplicationContext(), getString(R.string.banner_ad_unit_id));
+        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }

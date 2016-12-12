@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.havistudio.myredditcp.data.SubRedditContract;
 import com.squareup.picasso.Picasso;
 
@@ -29,13 +31,14 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
     private View mEmptyView;
     final private int layoutResourceId;
     private boolean mUseTodayLayout = true;
+    private Tracker mTracker;
 
-    public SubRedditAdapter(Context context, SubRedditAdapterOnClickHandler data, int layoutResourceId, View emptyView) {
+    public SubRedditAdapter(Context context, Tracker mTracker, SubRedditAdapterOnClickHandler data, int layoutResourceId, View emptyView) {
         this.context = context;
         this.data = data;
         this.layoutResourceId = layoutResourceId;
         mEmptyView = emptyView;
-
+        this.mTracker = mTracker;
     }
 
     public class SubRedditAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -67,15 +70,20 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
             int upsIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_UPS);
             int downsIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
             Log.i("Main3ActivityFragment", "onClick1: "+currentId);
+            String mTitle = mCursor.getString(titleIndex);
             Intent intent = new Intent(context, SubRedditDetailActivity.class);
             intent.putExtra("subredditId", currentId);
-            intent.putExtra("subreddittitle",  mCursor.getString(titleIndex));
+            intent.putExtra("subreddittitle",  mTitle);
             intent.putExtra("subredditthumb",  mCursor.getString(thumbIndex));
             intent.putExtra("subredditsubid",  mCursor.getString(subidIndex));
             intent.putExtra("subredditid",  mCursor.getString(idIndex));
             intent.putExtra("subredditscore",  mCursor.getString(scoreIndex));
             intent.putExtra("subredditups",  mCursor.getString(upsIndex));
             intent.putExtra("subredditdowns",  mCursor.getString(downsIndex));
+
+            mTracker.setScreenName("SubReddit~" + mTitle);
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
             context.startActivity(intent);
         }
     }

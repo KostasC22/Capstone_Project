@@ -10,4 +10,8 @@
     <string name="title_activity_sub_reddit_detail">SubRedditDetailActivity</string>
     <string name="button_subscribe">subscribe</string>
     <string name="detail_fragment_comments_title">Comments</string>
+
+    <!-- from google site -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>
