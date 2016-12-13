@@ -18,7 +18,7 @@ public class MakeSuscribeAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private static final String TAG = "MakeSuscribeAsyncTask";
 
-    private String tempText = "Unfavorite";
+    private String tempText = "Subscribe";
     private Context mContext;
     private String subredditId;
     private Button mButton;
@@ -52,12 +52,12 @@ public class MakeSuscribeAsyncTask extends AsyncTask<Void, Void, Void> {
             int columnSubscribeIndex = favoriteCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SUBSCRIBE);
             Log.i(TAG, "doInBackground subscribe: "+favoriteCursor.getString(columnSubscribeIndex));
             int currentValue = Integer.parseInt(favoriteCursor.getString(columnSubscribeIndex));
-            Log.i(TAG, "doInBackground: ");
+            Log.i(TAG, "doInBackground: currentValue="+currentValue);
             if (currentValue == 0) {
                 currentValue = 1;
+                tempText = "Unsubscribe";
             } else {
                 currentValue = 0;
-                tempText = "Unsubscribe";
             }
             SubRedditDbHelper dbHelper = new SubRedditDbHelper(mContext);
             SQLiteDatabase db = dbHelper.getWritableDatabase();

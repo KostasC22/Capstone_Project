@@ -53,6 +53,7 @@ public class SubRedditDetailActivityFragment extends Fragment implements LoaderM
 
     private long mId;
     private String mTitle, mThumb, mSubRedditId,msId,mScore, mDowns, mUps;
+    private int mSuscribe;
     public static MyAdapter adapter;
     private ArrayList<AdapterObject> myArray1;
 
@@ -69,6 +70,11 @@ public class SubRedditDetailActivityFragment extends Fragment implements LoaderM
         mScore = getActivity().getIntent().getExtras().getString("subredditscore");
         mUps = getActivity().getIntent().getExtras().getString("subredditups");
         mDowns = getActivity().getIntent().getExtras().getString("subredditdowns");
+        try{
+            mSuscribe = Integer.parseInt(getActivity().getIntent().getExtras().getString("subredditsubscribe"));
+        } catch (Exception e){
+            mSuscribe = 0;
+        }
     }
 
     @Override
@@ -91,6 +97,12 @@ public class SubRedditDetailActivityFragment extends Fragment implements LoaderM
 
         TextView tDownsText = (TextView) rootView.findViewById(R.id.fragment_text_downs);
         tDownsText.setText("Downs: "+mDowns);
+
+        if(mSuscribe == 0){
+            buttonSubcribe.setText("Subscribe");
+        } else {
+            buttonSubcribe.setText("Unsubscribe");
+        }
 
         ListView myListView = (ListView) rootView.findViewById(R.id.unitListView);
         myArray1 = new ArrayList<AdapterObject>();

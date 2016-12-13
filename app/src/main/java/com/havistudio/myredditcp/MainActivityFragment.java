@@ -42,6 +42,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             SubRedditContract.SubRedditEntry.COLUMN_UPS,
             SubRedditContract.SubRedditEntry.COLUMN_DOWNS,
             SubRedditContract.SubRedditEntry.COLUMN_NUM_COMMENTS,
+            SubRedditContract.SubRedditEntry.COLUMN_SUBSCRIBE,
     };
 
     public MainActivityFragment() {

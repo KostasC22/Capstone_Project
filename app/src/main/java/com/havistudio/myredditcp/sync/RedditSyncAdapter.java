@@ -48,7 +48,7 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String ACTION_DATA_UPDATED =
             "com.havistudio.myredditcp.ACTION_DATA_UPDATED";
 
-    public static final int SYNC_INTERVAL = 15;
+    public static final int SYNC_INTERVAL = 10;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int SUBREDDIT_NOTIFICATION_ID = 3005;
@@ -178,83 +178,100 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
                     new String[]{
                             SubRedditContract.SubRedditEntry.COLUMN_ID,
                             SubRedditContract.SubRedditEntry.COLUMN_NUM_COMMENTS,
+                            SubRedditContract.SubRedditEntry.COLUMN_TITLE,
                             SubRedditContract.SubRedditEntry.COLUMN_UPS,
                             SubRedditContract.SubRedditEntry.COLUMN_DOWNS,
                             SubRedditContract.SubRedditEntry.COLUMN_THUMBNAIL,
-                            SubRedditContract.SubRedditEntry.COLUMN_SUBSCRIBE
+                            SubRedditContract.SubRedditEntry.COLUMN_SUBSCRIBE,
+                            SubRedditContract.SubRedditEntry.COLUMN_SCORE,
+                            SubRedditContract.SubRedditEntry.COLUMN_SUBREDDIT_ID
                     },
                     SubRedditContract.SubRedditEntry.COLUMN_SUBSCRIBE + " = ?",
                     new String[]{"1"},
                     null);
 
-            if (mCursor2.moveToFirst()) {
-                int columnIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_ID);
-                int columnNoC = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_NUM_COMMENTS);
-                int titleIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_TITLE);
-                int thumbIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_THUMBNAIL);
-                int subidIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SUBREDDIT_ID);
-                int idIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_ID);
-                int scoreIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SCORE);
-                int upsIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_UPS);
-                int downsIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
-                String columnID = mCursor2.getString(columnIndex);
-                int cpComments = Integer.parseInt(mCursor2.getString(columnNoC));
-                CommentsTask ct = new CommentsTask(columnID, false);
-                try {
-                    List<Child> comments = ct.execute().get();
-                    for (Child tempChild : comments) {
-                        int inCom = tempChild.getData().getNumComments();
-                        if (cpComments != inCom) {
-                            int commentsDiff = cpComments - inCom;
-                            String title = context.getString(R.string.app_name);
-                            Resources resources = mContext.getResources();
+            Log.i("mkel","-- "+mCursor2.getCount());
+            try {
+                while (mCursor2.moveToNext()) {
+                    int columnIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_ID);
+                    int columnNoC = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_NUM_COMMENTS);
+                    int titleIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_TITLE);
+                    int thumbIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_THUMBNAIL);
+                    int subidIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SUBREDDIT_ID);
+                    int idIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_ID);
+                    int scoreIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SCORE);
+                    int upsIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_UPS);
+                    int downsIndex = mCursor2.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
+                    String columnID = mCursor2.getString(columnIndex);
+                    int cpComments = Integer.parseInt(mCursor2.getString(columnNoC));
+                    CommentsTask ct = new CommentsTask(columnID, false);
+                    try {
+                        List<Child> comments = ct.execute().get();
+                        for (Child tempChild : comments) {
+                            int inCom = tempChild.getData().getNumComments();
+                            Log.i("mkel", "datat: " + tempChild.getData().toString());
+                            Log.i("mkel", "++ " + cpComments);
+                            Log.i("mkel", "** " + cpComments);
+                            if (cpComments != inCom) {
+                                int commentsDiff = cpComments - inCom;
+                                String title = context.getString(R.string.app_name);
+                                Resources resources = mContext.getResources();
 
-                            String contentText = tempChild.getData().getTitle().substring(0, 20) + "Num:" + commentsDiff;
+                                String contentText = "Title";
+                                String tempTitle = tempChild.getData().getTitle();
+                                if(tempTitle.length()>20) {
+                                    contentText = tempTitle.substring(0, 20) + "Num:" + commentsDiff;
+                                } else {
+                                    contentText = tempTitle.substring(0, tempTitle.length()-1) + "Num:" + commentsDiff;
+                                }
 
-                            // NotificationCompatBuilder is a very convenient way to build backward-compatible
-                            // notifications.  Just throw in some data.
-                            NotificationCompat.Builder mBuilder =
-                                    new NotificationCompat.Builder(getContext())
-                                            .setColor(getContext().getResources().getColor(R.color.colorPrimary))
-                                            .setSmallIcon(R.drawable.ic_menu_send)
-                                            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_menu_send))
-                                            .setContentTitle(title)
-                                            .setContentText(contentText);
+                                // NotificationCompatBuilder is a very convenient way to build backward-compatible
+                                // notifications.  Just throw in some data.
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(getContext())
+                                                .setColor(getContext().getResources().getColor(R.color.colorPrimary))
+                                                .setSmallIcon(R.drawable.ic_menu_send)
+                                                .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_menu_send))
+                                                .setContentTitle(title)
+                                                .setContentText(contentText);
 
-                            // Make something interesting happen when the user clicks on the notification.
-                            // In this case, opening the app is sufficient.
-                            Intent resultIntent = new Intent(mContext, SubRedditDetailActivity.class);
-                            resultIntent.putExtra("subredditId", columnID);
-                            resultIntent.putExtra("subreddittitle", mCursor2.getString(titleIndex));
-                            resultIntent.putExtra("subredditthumb", mCursor2.getString(thumbIndex));
-                            resultIntent.putExtra("subredditsubid", mCursor2.getString(subidIndex));
-                            resultIntent.putExtra("subredditid", mCursor2.getString(idIndex));
-                            resultIntent.putExtra("subredditscore", mCursor2.getString(scoreIndex));
-                            resultIntent.putExtra("subredditups", mCursor2.getString(upsIndex));
-                            resultIntent.putExtra("subredditdowns", mCursor2.getString(downsIndex));
+                                // Make something interesting happen when the user clicks on the notification.
+                                // In this case, opening the app is sufficient.
+                                Intent resultIntent = new Intent(mContext, SubRedditDetailActivity.class);
+                                resultIntent.putExtra("subredditId", columnID);
+                                resultIntent.putExtra("subreddittitle", mCursor2.getString(titleIndex));
+                                resultIntent.putExtra("subredditthumb", mCursor2.getString(thumbIndex));
+                                resultIntent.putExtra("subredditsubid", mCursor2.getString(subidIndex));
+                                resultIntent.putExtra("subredditid", mCursor2.getString(idIndex));
+                                resultIntent.putExtra("subredditscore", mCursor2.getString(scoreIndex));
+                                resultIntent.putExtra("subredditups", mCursor2.getString(upsIndex));
+                                resultIntent.putExtra("subredditdowns", mCursor2.getString(downsIndex));
 
-                            // The stack builder object will contain an artificial back stack for the
-                            // started Activity.
-                            // This ensures that navigating backward from the Activity leads out of
-                            // your application to the Home screen.
-                            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                            stackBuilder.addNextIntent(resultIntent);
-                            PendingIntent resultPendingIntent =
-                                    stackBuilder.getPendingIntent(
-                                            0,
-                                            PendingIntent.FLAG_UPDATE_CURRENT
-                                    );
-                            mBuilder.setContentIntent(resultPendingIntent);
+                                // The stack builder object will contain an artificial back stack for the
+                                // started Activity.
+                                // This ensures that navigating backward from the Activity leads out of
+                                // your application to the Home screen.
+                                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                                stackBuilder.addNextIntent(resultIntent);
+                                PendingIntent resultPendingIntent =
+                                        stackBuilder.getPendingIntent(
+                                                0,
+                                                PendingIntent.FLAG_UPDATE_CURRENT
+                                        );
+                                mBuilder.setContentIntent(resultPendingIntent);
 
-                            NotificationManager mNotificationManager =
-                                    (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                            // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
-                            mNotificationManager.notify(SUBREDDIT_NOTIFICATION_ID, mBuilder.build());
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
+                                mNotificationManager.notify(SUBREDDIT_NOTIFICATION_ID, mBuilder.build());
+                            }
                         }
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
                     }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
                 }
+            } finally {
+                mCursor2.close();
             }
 
         } catch (IOException e) {
@@ -265,21 +282,16 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void initializeSyncAdapter(Context context) {
-        //Log.i("kostaslog", "initializeSyncAdapter: 2");
         getSyncAccount(context);
     }
 
     public static Account getSyncAccount(Context context) {
-        //Log.i("kostaslog", "getSyncAccount: 3");
-        // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
         // Create the account type and default account
         Account newAccount = new Account(
                 context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
-        //Log.i("kostaslog", "getSyncAccount: 4");
-        // If the password doesn't exist, the account doesn't exist
         try {
             if (null == accountManager.getPassword(newAccount)) {
 
@@ -302,12 +314,10 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
         } catch (SecurityException e){
 
         }
-        //Log.i("kostaslog", "getSyncAccount: 5");
         return newAccount;
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
-        //Log.i("kostaslog", "onAccountCreated: 6");
         /*
          * Since we've created an account
          */
@@ -325,7 +335,6 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-        //Log.i("kostaslog", "configurePeriodicSync: 7");
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -342,7 +351,6 @@ public class RedditSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static void syncImmediately(Context context) {
-        //Log.i("kostaslog", "syncImmediately: 6");
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);

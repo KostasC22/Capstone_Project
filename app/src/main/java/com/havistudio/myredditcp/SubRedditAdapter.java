@@ -69,6 +69,7 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
             int scoreIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SCORE);
             int upsIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_UPS);
             int downsIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
+            int subscribeIndex = mCursor.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SUBSCRIBE);
             Log.i("Main3ActivityFragment", "onClick1: "+currentId);
             String mTitle = mCursor.getString(titleIndex);
             Intent intent = new Intent(context, SubRedditDetailActivity.class);
@@ -80,6 +81,7 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
             intent.putExtra("subredditscore",  mCursor.getString(scoreIndex));
             intent.putExtra("subredditups",  mCursor.getString(upsIndex));
             intent.putExtra("subredditdowns",  mCursor.getString(downsIndex));
+            intent.putExtra("subredditsubscribe",  mCursor.getString(subscribeIndex));
 
             mTracker.setScreenName("SubReddit~" + mTitle);
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());
@@ -111,9 +113,6 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.i("onBindViewHolder","1:"+tempImage);
-        Log.i("onBindViewHolder","2:"+imgThumb);
-        //Log.i("onBindViewHolder", "onBindViewHolder: "+imgThumb);
         if(imgThumb!= null){
             Picasso.with(context).load(imgThumb).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).fit().into(subRedditAdapterViewHolder.mThumbView);
         }
@@ -125,8 +124,6 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
     }
 
     public SubRedditAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        //Log.i("SRAViewHolder", "viewGroup: "+viewGroup.getTransitionName());
-        //Log.i("SRAViewHolder", "viewType: "+viewType);
         int layoutId = R.layout.list_item_subreddit;
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(layoutId, viewGroup, false);
         view.setFocusable(true);
