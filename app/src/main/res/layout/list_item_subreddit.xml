@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/list_item_thumbnail"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/list_item_subreddit_thumb"
             android:layout_height="match_parent" />
 
         <LinearLayout
@@ -37,7 +37,7 @@
                     android:id="@+id/list_item_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_margin="@dimen/list_item_subreddit_details"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_weight="1" />
 
@@ -55,28 +55,28 @@
                     android:id="@+id/list_item_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_margin="@dimen/list_item_subreddit_details"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
                     android:id="@+id/list_item_ups"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_margin="@dimen/list_item_subreddit_details"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
                     android:id="@+id/list_item_downs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_margin="@dimen/list_item_subreddit_details"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
                     android:id="@+id/list_item_nofcoms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_margin="@dimen/list_item_subreddit_details"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             </LinearLayout>

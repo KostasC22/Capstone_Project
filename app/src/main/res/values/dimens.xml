@@ -4,4 +4,13 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="margin_top_list_item">20dp</dimen>
+    <dimen name="comment_row_comment_content">20dp</dimen>
+    <dimen name="comment_row_detail_container">10dp</dimen>
+    <dimen name="comment_row_detail_info">5dp</dimen>
+    <dimen name="fragment_sd_detailsubredditTitle">30dp</dimen>
+    <dimen name="fragment_sd_detailsubredditThumb">271dp</dimen>
+    <dimen name="fragment_sd_fragment_text_score">20dp</dimen>
+    <dimen name="fragment_sd_fragment_make_subscribe">5dp</dimen>
+    <dimen name="list_item_subreddit_details">20dp</dimen>
+    <dimen name="list_item_subreddit_thumb">100dp</dimen>
 </resources>

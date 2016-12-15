@@ -22,9 +22,9 @@
                 android:id="@+id/comment_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/comment_row_comment_content"
                 android:layout_weight="1"
-                android:text="Epiccccccccccc:)!!!"
+                android:text="@string/comment_content_textview"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         </LinearLayout>
@@ -34,13 +34,13 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="10dp">
+            android:paddingLeft="@dimen/comment_row_detail_container">
 
             <TextView
                 android:id="@+id/comment_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/comment_row_detail_info"
                 android:text="Score: 4"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -48,7 +48,7 @@
                 android:id="@+id/comment_ups"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/comment_row_detail_info"
                 android:text="Ups: 4"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -56,7 +56,7 @@
                 android:id="@+id/comment_downs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/comment_row_detail_info"
                 android:text="Downs: 0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
