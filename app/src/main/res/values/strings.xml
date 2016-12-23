@@ -18,5 +18,6 @@
     <string name="subreddit_image">Subreddit Image</string>
     <string name="title_widget">MyRedditCP Wigdet</string>
     <string name="widget_title_list">SubReddit Title</string>
+    <string name="widget_subreddit_title">Subreddit Title</string>
 
 </resources>

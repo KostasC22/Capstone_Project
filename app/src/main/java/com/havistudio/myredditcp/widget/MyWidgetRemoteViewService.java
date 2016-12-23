@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
 import android.os.Build;
+import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.havistudio.myredditcp.R;
+import com.havistudio.myredditcp.SubRedditAdapter;
 import com.havistudio.myredditcp.data.SubRedditContract;
 
 /**
@@ -49,6 +51,12 @@ public class MyWidgetRemoteViewService extends RemoteViewsService {
                 }
                 final long identityToken = Binder.clearCallingIdentity();
 
+                data = getContentResolver().query(SubRedditContract.SubRedditEntry.CONTENT_URI, SUBREDDIT_COLUMNS,
+                        null,
+                        null,
+                        null);
+
+                Binder.restoreCallingIdentity(identityToken);
             }
 
             @Override
@@ -65,8 +73,28 @@ public class MyWidgetRemoteViewService extends RemoteViewsService {
             }
 
             @Override
-            public RemoteViews getViewAt(int i) {
-                return null;
+            public RemoteViews getViewAt(int position) {
+
+                if (position == AdapterView.INVALID_POSITION ||
+                        data == null || !data.moveToPosition(position)) {
+                    return null;
+                }
+                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_list_item);
+                views.setImageViewResource(R.id.widget_icon, R.mipmap.ic_launcher);
+
+                int titleIndex = data.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_TITLE);
+                int scoreIndex = data.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_SCORE);
+                int upsIndex = data.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_UPS);
+                int downsIndex = data.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_DOWNS);
+                int nocoIndex = data.getColumnIndex(SubRedditContract.SubRedditEntry.COLUMN_NUM_COMMENTS);
+
+                views.setTextViewText(R.id.widget_title, SubRedditAdapter.validateTitle(data.getString(titleIndex)));
+                views.setTextViewText(R.id.widget_score, "S:" + String.valueOf(data.getString(scoreIndex)));
+                views.setTextViewText(R.id.widget_ups, "U:" + String.valueOf(data.getString(upsIndex)));
+                views.setTextViewText(R.id.widget_downs, "D:" + String.valueOf(data.getString(downsIndex)));
+                views.setTextViewText(R.id.widget_nocom, "C:" + String.valueOf(data.getString(nocoIndex)));
+
+                return views;
             }
 
             @Override
@@ -76,12 +104,14 @@ public class MyWidgetRemoteViewService extends RemoteViewsService {
 
             @Override
             public int getViewTypeCount() {
-                return 0;
+                return 1;
             }
 
             @Override
-            public long getItemId(int i) {
-                return 0;
+            public long getItemId(int position) {
+                if (data.moveToPosition(position))
+                    return data.getLong(data.getColumnIndex(SubRedditContract.SubRedditEntry._ID));
+                return position;
             }
 
             @Override
