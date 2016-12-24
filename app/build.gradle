@@ -23,12 +23,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.installRelease
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -49,7 +50,6 @@ dependencies {
     compile 'com.google.firebase:firebase-ads:9.0.0'
     // analytics
     compile 'com.google.android.gms:play-services-analytics:9.0.0'
-
     testCompile 'junit:junit:4.12'
 }
 
