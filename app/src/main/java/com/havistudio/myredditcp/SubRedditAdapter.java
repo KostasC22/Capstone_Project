@@ -192,4 +192,14 @@ public class SubRedditAdapter extends RecyclerView.Adapter<SubRedditAdapter.SubR
 
         return temp.toString();
     }
+
+    public static String validateTitleWidget(String input){
+        StringBuilder temp = new StringBuilder(input);
+
+        if(temp.length()> 32){
+            temp.delete(32,temp.length()-1);
+        }
+
+        return temp.toString();
+    }
 }

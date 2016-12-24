@@ -7,7 +7,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
@@ -19,40 +21,22 @@ import com.havistudio.myredditcp.sync.RedditSyncAdapter;
  * Created by kostas on 15/12/2016.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class MyWidgetProvider extends AppWidgetProvider {
+public class MyWidgetProvider extends ContentObserver {
 
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds) {
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+    private AppWidgetManager mAppWidgetManager;
+    private ComponentName mComponentName;
 
-            Intent intent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                setRemoteAdapter(context, views);
-            } else {
-                setRemoteAdapterV11(context, views);
-            }
-        }
+    MyWidgetProvider(AppWidgetManager mgr, ComponentName cn, Handler h) {
+        super(h);
+        mAppWidgetManager = mgr;
+        mComponentName = cn;
     }
 
-    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-        super.onReceive(context, intent);
-        if (RedditSyncAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    new ComponentName(context, getClass()));
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
-        }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public void onChange(boolean selfChange) {
+        mAppWidgetManager.notifyAppWidgetViewDataChanged(
+                mAppWidgetManager.getAppWidgetIds(mComponentName), R.id.widget_list);
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
-        views.setRemoteAdapter(R.id.widget_list, new Intent(context, MyWidgetRemoteViewService.class));
-    }
-
-    private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
-        views.setRemoteAdapter(0, R.id.widget_list, new Intent(context, MyWidgetRemoteViewService.class));
-    }
 }

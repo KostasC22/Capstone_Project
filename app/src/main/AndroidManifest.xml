@@ -58,22 +58,23 @@
         <provider
             android:name=".data.SubRedditProvider"
             android:authorities="@string/content_authority"
-            android:exported="false"
-            android:syncable="true" />
+            android:exported="true"
+            android:syncable="true"
+            android:grantUriPermissions="true"
+
+            />
         <!-- My Widget -->
         <receiver
-            android:name=".widget.MyWidgetProvider"
+            android:name=".widget.MyWidget"
             android:label="@string/title_widget"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />
         </receiver>
         <service
             android:name=".widget.MyWidgetRemoteViewService"
-            android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
