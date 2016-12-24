@@ -20,4 +20,10 @@
     <string name="widget_title_list">SubReddit Title</string>
     <string name="widget_subreddit_title">Subreddit Title</string>
 
+
+    <string name="score">Score: %d</string>
+    <string name="ups">Ups: %d</string>
+    <string name="downs">Downs: %d</string>
+    <string name="subscribe_text">Subscribe</string>
+    <string name="unsubscribe_text">Unsubscribe</string>
 </resources>

@@ -90,18 +90,18 @@ public class SubRedditDetailActivityFragment extends Fragment implements LoaderM
         Picasso.with(getActivity()).load(mThumb).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).fit().into(tThumbView);
 
         TextView tScoreText = (TextView) rootView.findViewById(R.id.fragment_text_score);
-        tScoreText.setText("Score: "+mScore);
+        tScoreText.setText(getString(R.string.score, Long.parseLong(mScore)));
 
         TextView tUpsText = (TextView) rootView.findViewById(R.id.fragment_text_ups);
-        tUpsText.setText("Ups: "+mUps);
+        tUpsText.setText(getString(R.string.ups, Long.parseLong(mUps)));
 
         TextView tDownsText = (TextView) rootView.findViewById(R.id.fragment_text_downs);
-        tDownsText.setText("Downs: "+mDowns);
+        tDownsText.setText(getString(R.string.downs, Long.parseLong(mDowns)));
 
         if(mSuscribe == 0){
-            buttonSubcribe.setText("Subscribe");
+            buttonSubcribe.setText(R.string.subscribe_text);
         } else {
-            buttonSubcribe.setText("Unsubscribe");
+            buttonSubcribe.setText(R.string.unsubscribe_text);
         }
 
         ListView myListView = (ListView) rootView.findViewById(R.id.unitListView);

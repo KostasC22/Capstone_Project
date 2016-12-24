@@ -50,15 +50,13 @@ public class MyAdapter extends ArrayAdapter<AdapterObject> {
         commentContentTextView.setText(temp.getContent());
 
         TextView commentScoreTextView = (TextView) rowView.findViewById(R.id.comment_score);
-        commentScoreTextView.setText("Score:"+temp.getScore());
+        commentScoreTextView.setText(context.getString(R.string.score, temp.getScore()));
 
         TextView commentUpsTextView = (TextView) rowView.findViewById(R.id.comment_ups);
-        commentUpsTextView.setText("Ups:"+temp.getUps());
+        commentUpsTextView.setText(context.getString(R.string.ups, temp.getUps()));
 
         TextView commentDownsTextView = (TextView) rowView.findViewById(R.id.comment_downs);
-        commentDownsTextView.setText("Downs:"+temp.getDowns());
-
-        //Log.i(TAG,position+"_"+getItem(position));
+        commentDownsTextView.setText(context.getString(R.string.downs, temp.getDowns()));
 
         return rowView;
     }
